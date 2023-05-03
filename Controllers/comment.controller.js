@@ -20,7 +20,7 @@ function getCommentById(req, res) {
         .catch((err) => res.status(400).json(err));
 }
 
-function getCommentByPostId(req, res) {
+function getCommentsByPostId(req, res) {
     comment.find({commentPost: req.params.commentPost})
         .then((result) => {
             if (result) {
@@ -71,4 +71,4 @@ function deleteComment(req, res) {
         .catch((err) => res.status(400).json(err));
 }
 
-module.exports = { getAllComments, getCommentById, getCommentByPostId, postComment, putComment, deleteComment };
+module.exports = { getAllComments, getCommentById, getCommentsByPostId, postComment, putComment, deleteComment };

@@ -29,7 +29,7 @@ function postPost(req, res) {
         content: req.body.content,
         media: req.body.media,
         postUser: req.body.postUser,
-        postSubreddot: req.body.postSubreddot
+        postSub: req.body.postSub
     });
     newPost.save()
         .then((result) => {
@@ -47,7 +47,7 @@ function putPost(req, res) {
         content: req.body.content,
         media: req.body.media,
         postUser: req.body.postUser,
-        postSubreddot: req.body.postSubreddot
+        postSub: req.body.postSub
     }).then((result) => {
         res.send(result);
     }).catch((err) => {
