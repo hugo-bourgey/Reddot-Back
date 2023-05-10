@@ -183,15 +183,17 @@ function addUserUpvote(req, res) {
     .catch((err) => res.status(400).json(err));
 }
 
+//Returns true if pseudo already exists in DB
 function checkPseudo(req, res) {
     User.findOne({pseudo: req.body.pseudo})
     .then((result) => {
+        console.log(result);
         if (result) {
-            console.log('pseudo does not exist');
-            res.send(false);
-        } else {
-            console.log('pseudo exists');
+            console.log('pseudo exist');
             res.send(true);
+        } else {
+            console.log('pseudo does not exists');
+            res.send(false);
         }
     })
     .catch((err) => {
@@ -200,15 +202,17 @@ function checkPseudo(req, res) {
     });
 }
 
-function checkMail(userMail) {
+//Returns true if mail already exists in DB
+function checkMail(req, res) {
     User.findOne({mail: req.body.mail})
     .then((result) => {
+        console.log(result);
         if (result) {
-            console.log('mail does not exist');
-            res.send(false);
-        } else {
-            console.log('mail exists');
+            console.log('mail exist');
             res.send(true);
+        } else {
+            console.log('mail does not exists');
+            res.send(false);
         }
     })
     .catch((err) => {
