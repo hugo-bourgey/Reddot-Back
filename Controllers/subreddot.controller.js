@@ -72,4 +72,16 @@ function deleteSubreddot(req, res) {
         .catch((err) => {res.status(500).json(err)});
 }
 
-module.exports = { getAllSubreddots, getSubreddotById, getSubreddotByName, postSubreddot, putSubreddot, deleteSubreddot };
+function checkName(req, res) {
+    subreddot.findOne({name: req.body.name})
+        .then((result) => {
+            if (result) {
+                res.send(true);
+            } else {
+                res.send(false);
+            }
+        })
+        .catch((err) => res.status(400).json(err));
+}
+
+module.exports = { getAllSubreddots, getSubreddotById, getSubreddotByName, postSubreddot, putSubreddot, deleteSubreddot, checkName };
