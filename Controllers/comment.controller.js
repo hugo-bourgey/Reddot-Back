@@ -85,11 +85,9 @@ function getParent(req, res) {
 }
 
 function getCommentsByParentId(req, res) {
-    console.log("getCommentsByParentId");
     comment.find({parent: req.params.parent})
         .then((result) => {
             if (result) {
-                console.log('ok');
                 res.send(result);
             } else {
                 res.status(404).send('Comment not found');

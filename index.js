@@ -10,7 +10,7 @@ const jwt = require('jsonwebtoken');
 const auth = require('./auth');
 const User = require('./Models/user.model');
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 const app = express();
 
 // Connect to DB
