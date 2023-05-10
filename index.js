@@ -31,12 +31,12 @@ app.use(express.json());
 
 app.post('/login', (req, res) => {
     console.log(req.body);
-    User.findOne({mail: req.body.email, password: req.body.password})
+    User.findOne({mail: req.body.mail, password: req.body.password})
     .then((result) => {
         if (!result) {
             return res.status(404).send('User not found');
         }
-        const userobj = {email: req.body.email};
+        const userobj = {mail: req.body.mail};
         const token = jwt.sign(userobj, process.env.SECRET_TOKEN);
         res.json({
             accessToken: token,
@@ -50,5 +50,3 @@ app.use('/users', userRouter);
 app.use('/subreddots', subreddotRouter);
 app.use('/posts', postRouter);
 app.use('/comments', commentRouter);
-
-//coucou
