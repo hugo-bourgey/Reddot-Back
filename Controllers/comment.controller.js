@@ -39,7 +39,8 @@ function postComment(req, res) {
     const newComment = new comment({
         content: req.body.content,
         commentUser: req.body.commentUser,
-        commentPost: req.body.commentPost
+        commentPost: req.body.commentPost,
+        parent: req.body.parent
     });
     newComment.save()
         .then((result) => {
@@ -71,4 +72,33 @@ function deleteComment(req, res) {
         .catch((err) => res.status(400).json(err));
 }
 
-module.exports = { getAllComments, getCommentById, getCommentsByPostId, postComment, putComment, deleteComment };
+function getParent(req, res) {
+    comment.findById(req.params.id)
+        .then((result) => {
+            if (result) {
+                res.send(result.parent);
+            } else {
+                res.status(404).send('Comment not found');
+            }
+        })
+        .catch((err) => res.status(400).json(err));
+}
+
+function getCommentsByParentId(req, res) {
+    console.log("getCommentsByParentId");
+    comment.find({parent: req.params.parent})
+        .then((result) => {
+            if (result) {
+                console.log('ok');
+                res.send(result);
+            } else {
+                res.status(404).send('Comment not found');
+            }
+        })
+        .catch((err) => {
+            res.status(400).json(err);
+            console.log(err);
+        });
+}
+
+module.exports = { getAllComments, getCommentById, getCommentsByPostId, postComment, putComment, deleteComment, getParent, getCommentsByParentId };
