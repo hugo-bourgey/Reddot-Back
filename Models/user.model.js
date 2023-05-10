@@ -4,7 +4,8 @@ const userSchema = mongoose.Schema({
     pseudo: { type: String, required: true },
     password: { type: String, required: true },
     userPosts: { type: Array, required: false },
-    userSubscribes: { type: Array, required: false }
+    userSubscribes: { type: Array, required: false },
+    userUpvotes: { type: Array, required: false }
 }, {timestamps: true});
 const User = mongoose.model('Users', userSchema);
 module.exports = User;

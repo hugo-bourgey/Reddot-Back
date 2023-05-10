@@ -10,5 +10,7 @@ userRouter.delete('/:id', userController.deleteUser);
 userRouter.put('/subscribe/:id', userController.subscribeToSubreddot);
 userRouter.put('/unsubscribe/:id', userController.unsubscribeToSubreddot);
 userRouter.get('/isSubscribed/:id', userController.isSubscribed);
+userRouter.get('/upvotes/:id', userController.getUserUpvotes);
+userRouter.post('/upvotes/:id', userController.addUserUpvote);
 
 module.exports = userRouter;
