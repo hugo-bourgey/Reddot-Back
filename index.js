@@ -34,7 +34,8 @@ app.get('/login', (req, res) => {
     .then((result) => {
         const userobj = {pseudo: req.body.pseudo};
         const token = jwt.sign(userobj, process.env.SECRET_TOKEN);
-        res.json({accessToken: token});
+        //res.json({accessToken: token});
+        res.send(result);
     })
     .catch((err) => {res.send(err)});
 })
