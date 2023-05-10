@@ -1,4 +1,5 @@
 const subreddot = require('../Models/subreddot.model.js');
+const users = require('../Models/user.model.js');
 
 function getAllSubreddots(req, res) {
     subreddot.find()
