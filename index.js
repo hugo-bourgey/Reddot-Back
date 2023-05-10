@@ -27,17 +27,23 @@ app.use(cors({
 
 app.use(express.json());
 
-app.get('/login', (req, res) => {
-    User.findOne({pseudo: req.body.pseudo, password: req.body.password})
+app.post('/login', (req, res) => {
+    console.log(req.body);
+    User.findOne({mail: req.body.email, password: req.body.password})
     .then((result) => {
-        const userobj = {pseudo: req.body.pseudo};
+        if (!result) {
+            return res.status(404).send('User not found');
+        }
+        const userobj = {email: req.body.email};
         const token = jwt.sign(userobj, process.env.SECRET_TOKEN);
-        res.json({accessToken: token});
+        res.json({
+            accessToken: token,
+            userId: result._id
+        });
     })
     .catch((err) => {res.send(err)});
 })
 app.get('/', auth, (req, res) => { res.send('Welcome to my web server'); });
-
 app.use('/users', userRouter);
 app.use('/subreddots', subreddotRouter);
 app.use('/posts', postRouter);
