@@ -8,5 +8,6 @@ subreddotRouter.get('/name/:name', subreddotController.getSubreddotByName);
 subreddotRouter.post('/', subreddotController.postSubreddot);
 subreddotRouter.put('/:id', subreddotController.putSubreddot);
 subreddotRouter.delete('/:id', subreddotController.deleteSubreddot);
+subreddotRouter.post('/checkName', subreddotController.checkName);
 
 module.exports = subreddotRouter;
