@@ -47,6 +47,6 @@ app.post('/login', (req, res) => {
 })
 app.get('/', auth, (req, res) => { res.send('Welcome to my web server'); });
 app.use('/users', auth, userRouter);
-app.use('/subreddots', auth, subreddotRouter);
-app.use('/posts', auth, postRouter);
-app.use('/comments', auth, commentRouter);
+app.use('/subreddots', subreddotRouter);
+app.use('/posts', postRouter);
+app.use('/comments', commentRouter);
