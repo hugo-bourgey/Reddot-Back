@@ -12,6 +12,7 @@ const jwt = require('jsonwebtoken');
 const auth = require('./auth');
 const User = require('./Models/user.model');
 const firebase = require('firebase/app');
+const storage = require('firebase/storage');
 
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -41,7 +42,7 @@ const firebaseConfig = {
   };
   
   // Initialize Firebase
-const firebaseApp = firebase.initializeApp(firebaseConfig);
+var firebaseApp = firebase.initializeApp(firebaseConfig);
 
 app.use(cors({
     origin: '*'
@@ -70,3 +71,22 @@ app.use('/users', auth, userRouter);
 app.use('/subreddots', subreddotRouter);
 app.use('/posts', postRouter);
 app.use('/comments', commentRouter);
+
+
+const fbStorage = storage.getStorage(firebaseApp, "reddot-de363.appspot.com");
+
+const refImages = storage.ref(fbStorage, 'images');
+
+storage.listAll(refImages) .then((res) => {
+    res.items.forEach((itemRef) => {
+        console.log(itemRef.name);
+    });
+  }).catch((error) => {
+    console.log("Fuck it we ball");
+});
+
+const refSard = storage.ref(fbStorage, 'images/sard.png');
+
+storage.getDownloadURL(refSard).then(res => {
+    console.log(res);
+});
