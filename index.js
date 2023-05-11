@@ -11,9 +11,12 @@ const commentRouter = require('./Routes/comment.router');
 const jwt = require('jsonwebtoken');
 const auth = require('./auth');
 const User = require('./Models/user.model');
+const firebase = require('firebase/app');
 
 const PORT = process.env.PORT || 3000;
 const app = express();
+// Import the functions you need from the SDKs you need
+
 
 // Connect to DB
 mongoose.connect(process.env.DB_CONNECTION)
@@ -22,6 +25,23 @@ mongoose.connect(process.env.DB_CONNECTION)
     console.log(`Listening on port ${PORT}`);
 }))
 .catch((err) => console.log(err));
+
+
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+    apiKey: "AIzaSyA2Bgf9j-r1mrAs-iE_tsFVJU5A51Uwzok",
+    authDomain: "reddot-de363.firebaseapp.com",
+    projectId: "reddot-de363",
+    storageBucket: "reddot-de363.appspot.com",
+    messagingSenderId: "237282562487",
+    appId: "1:237282562487:web:9e2c1c40831df763511832"
+  };
+  
+  // Initialize Firebase
+const firebaseApp = firebase.initializeApp(firebaseConfig);
 
 app.use(cors({
     origin: '*'
