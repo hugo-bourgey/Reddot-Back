@@ -189,11 +189,11 @@ function checkPseudo(req, res) {
     .then((result) => {
         console.log(result);
         if (result) {
-            console.log('pseudo exist');
-            res.send(true);
-        } else {
             console.log('pseudo does not exists');
             res.send(false);
+        } else {
+            console.log('pseudo exist');
+            res.send(true);
         }
     })
     .catch((err) => {
@@ -204,15 +204,16 @@ function checkPseudo(req, res) {
 
 //Returns true if mail already exists in DB
 function checkMail(req, res) {
+    console.log(req.body.mail);
     User.findOne({mail: req.body.mail})
     .then((result) => {
         console.log(result);
         if (result) {
-            console.log('mail exist');
-            res.send(true);
-        } else {
             console.log('mail does not exists');
             res.send(false);
+        } else {
+            console.log('mail exist');
+            res.send(true);
         }
     })
     .catch((err) => {
