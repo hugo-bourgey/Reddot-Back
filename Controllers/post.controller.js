@@ -45,6 +45,8 @@ function postPost(req, res) {
         postSub: req.body.postSub
     });
     if (req.body.media !== 'text') {
+        var encoder = new TextEncoder();
+        encoder.encode(req.body.content);
         StorageService.uploadImageToFirebase(req.body.content)
         .then((result) => {
             newPost.content = result;
