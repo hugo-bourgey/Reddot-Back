@@ -3,7 +3,9 @@ const commentSchema = mongoose.Schema({
     content: { type: String, required: true },
     commentUser: { type: String, required: true },
     commentPost: { type: String, required: true },
-    parent: { type: String, required: false }
+    parent: { type: String, required: false },
+    commentUpvotes: { type: Array, required: false },
+    commentDownvotes: { type: Array, required: false },
 }, {timestamps: true});
 const Comment = mongoose.model('Comments', commentSchema);
 module.exports = Comment;

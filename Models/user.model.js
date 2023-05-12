@@ -5,7 +5,10 @@ const userSchema = mongoose.Schema({
     password: { type: String, required: true },
     userPosts: { type: Array, required: false },
     userSubscribes: { type: Array, required: false },
-    userUpvotes: { type: Array, required: false }
+    userUpvotes: { type: Array, required: false },
+    userDownvotes: { type: Array, required: false },
+    userCommentUpvotes: { type: Array, required: false },
+    userCommentDownvotes: { type: Array, required: false }
 }, {timestamps: true});
 const User = mongoose.model('Users', userSchema);
 module.exports = User;

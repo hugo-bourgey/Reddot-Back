@@ -5,7 +5,8 @@ const postSchema = mongoose.Schema({
     media: { type: String, required: true },
     postUser: { type: String, required: true },
     postSub: { type: String, required: true },
-    postUpvotes: { type: Array, required: false }
+    postUpvotes: { type: Array, required: false },
+    postDownvotes: { type: Array, required: false },
 }, {timestamps: true});
 const Post = mongoose.model('Posts', postSchema);
 module.exports = Post;
