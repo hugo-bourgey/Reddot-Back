@@ -33,7 +33,7 @@ function getPostsBySubId(req, res) {
     .catch((err) => res.status(400).json(err));
 }
 
-function postPost(req, res) {
+async function postPost(req, res) {
     if (!req.body.title) {
         return res.status(400).send('Title is required');
     }
@@ -46,24 +46,41 @@ function postPost(req, res) {
     });
     if (req.body.media !== 'text') {
         var encoder = new TextEncoder();
-        encoder.encode(req.body.content);
-        StorageService.uploadImageToFirebase(req.body.content)
-        .then((result) => {
-            newPost.content = result;
-            newPost.save()
-            .then((result) => {
-                res.send(result);
-            })
-            .catch((err) => res.status(500).json(err));
-        })
-        .catch((err) => res.status(500).json(err));
-    } else {
-        newPost.save()
-        .then((result) => {
-            res.send(result);
-        })
-        .catch((err) => res.status(500).json(err));
-    }
+        const img = encoder.encode(req.body.content);
+        //console.log('image reconvertie' + img);
+        StorageTmp = new StorageService();
+        //StorageService.uploadImageToFirebase(req.body.content)
+        //const imgUrl = await StorageTmp.uploadImageToFirebase(img);
+        const waitUrl = async () => {
+            const imgUrl = await StorageTmp.uploadImageToFirebase(img);
+            console.log('image url : ' + imgUrl);
+            newPost.content = imgUrl;
+        }
+        waitUrl();
+    } 
+    newPost.save()
+    .then((result) => {
+        res.send(result);
+    })
+    .catch((err) => res.status(500).json(err));
+
+        //     StorageTmp.uploadImageToFirebase(img)
+        //     .then((result) => {
+        //         newPost.content = result;
+        //         newPost.save()
+        //         .then((result) => {
+        //             res.send(result);
+        //         })
+        //         .catch((err) => res.status(500).json(err));
+        //     })
+        //     .catch((err) => res.status(500).json(err));
+        // } else {
+        //     newPost.save()
+        //     .then((result) => {
+        //         res.send(result);
+        //     })
+        //     .catch((err) => res.status(500).json(err));
+        // }
 }
     
     function putPost(req, res) {
