@@ -15,7 +15,7 @@ function getPostById(req, res) {
         if (result) {
             res.send(result);
         } else {
-            res.status(404).send('Post not found');
+            res.send(null);
         }
     })
     .catch((err) => res.status(400).json(err));
