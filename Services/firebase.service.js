@@ -1,0 +1,3 @@
+class FirebaseService {
+    static firebaseApp;
+}

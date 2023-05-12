@@ -1,35 +1,36 @@
 const post = require('../Models/post.model');
+const StorageService = require('../Services/storage.service');
 
 function getAllPosts(req, res) {
     post.find()
-        .then((result) => {
-            res.send(result);
-        })
-        .catch((err) => res.status(400).json(err));
+    .then((result) => {
+        res.send(result);
+    })
+    .catch((err) => res.status(400).json(err));
 }
 
 function getPostById(req, res) {
     post.findById(req.params.id)
-        .then((result) => {
-            if (result) {
-                res.send(result);
-            } else {
-                res.status(404).send('Post not found');
-            }
-        })
-        .catch((err) => res.status(400).json(err));
+    .then((result) => {
+        if (result) {
+            res.send(result);
+        } else {
+            res.status(404).send('Post not found');
+        }
+    })
+    .catch((err) => res.status(400).json(err));
 }
 
 function getPostsBySubId(req, res) {
     post.find({postSub: req.params.postSub})
-        .then((result) => {
-            if (result) {
-                res.send(result);
-            } else {
-                res.status(404).send('No posts for this sub');
-            }
-        })
-        .catch((err) => res.status(400).json(err));
+    .then((result) => {
+        if (result) {
+            res.send(result);
+        } else {
+            res.status(404).send('No posts for this sub');
+        }
+    })
+    .catch((err) => res.status(400).json(err));
 }
 
 function postPost(req, res) {
@@ -43,37 +44,49 @@ function postPost(req, res) {
         postUser: req.body.postUser,
         postSub: req.body.postSub
     });
-    newPost.save()
+    if (req.body.media !== 'text') {
+        StorageService.uploadImageToFirebase(req.body.content)
+        .then((result) => {
+            newPost.content = result;
+            newPost.save()
+            .then((result) => {
+                res.send(result);
+            })
+            .catch((err) => res.status(500).json(err));
+        })
+        .catch((err) => res.status(500).json(err));
+    } else {
+        newPost.save()
         .then((result) => {
             res.send(result);
         })
         .catch((err) => res.status(500).json(err));
-}
-
-function putPost(req, res) {
-    if (!req.body.title) {
-        return res.status(400).send('Title is required');
     }
-    post.findOneAndUpdate({ _id: req.params.id }, {
-        title: req.body.title,
-        content: req.body.content,
-        media: req.body.media,
-        postUser: req.body.postUser,
-        postSub: req.body.postSub
-    }).then((result) => {
-        res.send(result);
-    }).catch((err) => {
-        res.status(500).json(err);
-        });
 }
-
-function deletePost(req, res) {
-    post.findOneAndDelete({ _id: req.params.id })
+    
+    function putPost(req, res) {
+        if (!req.body.title) {
+            return res.status(400).send('Title is required');
+        }
+        post.findOneAndUpdate({ _id: req.params.id }, {
+            title: req.body.title,
+            content: req.body.content,
+            media: req.body.media,
+            postUser: req.body.postUser,
+            postSub: req.body.postSub
+        }).then((result) => {
+            res.send(result);
+        }).catch((err) => {
+            res.status(500).json(err);
+        });
+    }
+    
+    function deletePost(req, res) {
+        post.findOneAndDelete({ _id: req.params.id })
         .then((result) => {
             res.send(result);
         })
         .catch((err) => {res.status(500).json(err)});
-}
-
-
-module.exports = { getAllPosts, getPostById, postPost, putPost, deletePost, getPostsBySubId };
+    }
+    
+    module.exports = { getAllPosts, getPostById, postPost, putPost, deletePost, getPostsBySubId };
