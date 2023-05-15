@@ -1,5 +1,6 @@
 const subreddot = require('../Models/subreddot.model.js');
-const users = require('../Models/user.model.js');
+const StorageService = require('../Services/storage.service');
+
 
 function getAllSubreddots(req, res) {
     subreddot.find()
@@ -33,16 +34,31 @@ function getSubreddotByName(req, res) {
         .catch((err) => res.status(400).json(err));
 }
 
-function postSubreddot(req, res) {
+async function postSubreddot(req, res) {
     if (!req.body.name) {
         return res.status(400).send('Name is required');
     }
+
     const newSubreddot = new subreddot({
         name: req.body.name,
         description: req.body.description,
-        icon: req.body.icon
     });
-    newSubreddot.save()
+
+    const img = req.body.icon;
+    StorageTmp = new StorageService();
+
+    const waitUrl = async () => {
+        const imgUrl = await StorageTmp.uploadImageToFirebase(img);
+        newSubreddot.icon = imgUrl;
+    }
+
+    await waitUrl();
+
+    return saveSubreddot(req,res,newSubreddot);
+}
+
+function saveSubreddot(req, res, newSub) {
+    newSub.save()
         .then((result) => {
             res.send(result);
         })
