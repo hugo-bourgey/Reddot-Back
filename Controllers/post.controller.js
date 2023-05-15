@@ -51,18 +51,20 @@ async function postPost(req, res) {
         StorageTmp = new StorageService();
         //StorageService.uploadImageToFirebase(req.body.content)
         //const imgUrl = await StorageTmp.uploadImageToFirebase(img);
+
         const waitUrl = async () => {
             const imgUrl = await StorageTmp.uploadImageToFirebase(img);
             console.log('image url : ' + imgUrl);
             newPost.content = imgUrl;
+            console.log("j'ai fini mon async");
         }
-        waitUrl();
+
+        await waitUrl();
+
+        console.log("FUCK THE ASYNC WE BALL");
+        return savePost(req,res,newPost);
     } 
-    newPost.save()
-    .then((result) => {
-        res.send(result);
-    })
-    .catch((err) => res.status(500).json(err));
+
 
         //     StorageTmp.uploadImageToFirebase(img)
         //     .then((result) => {
@@ -81,6 +83,14 @@ async function postPost(req, res) {
         //     })
         //     .catch((err) => res.status(500).json(err));
         // }
+}
+
+function savePost(req,res, post) {
+    post.save()
+    .then((result) => {
+        res.send(result);
+    })
+    .catch((err) => res.status(500).json(err));
 }
     
     function putPost(req, res) {
