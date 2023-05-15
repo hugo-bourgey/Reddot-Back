@@ -1,6 +1,6 @@
 const storage = require('firebase/storage');
 //const { default: firebaseApp } = require('..');
-const Media = require('../Models/media.model');
+//const Media = require('../Models/media.model');
 const FirebaseService = require('./firebase.service');
 const uuid = require('uuid');
 

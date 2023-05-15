@@ -45,9 +45,10 @@ async function postPost(req, res) {
         postSub: req.body.postSub
     });
     if (req.body.media !== 'text') {
-        var encoder = new TextEncoder();
-        const img = encoder.encode(req.body.content);
+        //var encoder = new TextEncoder();
+        //const img = encoder.encode(req.body.content);
         //console.log('image reconvertie' + img);
+        const img = req.body.file;
         StorageTmp = new StorageService();
         //StorageService.uploadImageToFirebase(req.body.content)
         //const imgUrl = await StorageTmp.uploadImageToFirebase(img);
