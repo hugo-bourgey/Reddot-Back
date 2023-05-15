@@ -1,6 +1,7 @@
 const User = require("../Models/user.model");
 const Subreddot = require("../Models/subreddot.model");
 const Post = require("../Models/post.model");
+const Comment = require("../Models/comment.model");
 //const SubreddotController = require('./subreddot.controller');
 
 function getAllUsers(req, res) {
@@ -263,7 +264,7 @@ function addUserCommentUpvote(req, res) {
         userIdString = userId.toString();
         Comment.findById(req.body.userUpvotes).then((result2) => {
           if (result2) {
-            result.userUpvotes.push(req.body.userUpvotes);
+            result.userCommentUpvotes.push(req.body.userUpvotes);
             result.save();
             result2.commentUpvotes.push(userIdString);
             result2.save();
@@ -276,7 +277,7 @@ function addUserCommentUpvote(req, res) {
         res.status(404).send("User not found");
       }
     })
-    .catch((err) => res.status(400).json(err));
+    .catch((err) => {res.status(400).json(err); console.log(err)});
 }
 
 function addUserCommentDownvote(req, res) {
@@ -287,7 +288,7 @@ function addUserCommentDownvote(req, res) {
         userIdString = userId.toString();
         Comment.findById(req.body.userDownvotes).then((result2) => {
           if (result2) {
-            result.userDownvotes.push(req.body.userDownvotes);
+            result.userCommentDownvotes.push(req.body.userDownvotes);
             result.save();
             result2.commentDownvotes.push(userIdString);
             result2.save();
@@ -364,8 +365,8 @@ function removeUserCommentUpvote(req,res) {
                 userIdString = userId.toString();
                 Comment.findById(req.body.userUpvotes).then(result2 => {
                     if(result2) {
-                        userIndexToRemove = result.userUpvotes.indexOf(req.body.userUpvotes);
-                        result.userUpvotes.splice(userIndexToRemove, 1);
+                        userIndexToRemove = result.userCommentUpvotes.indexOf(req.body.userUpvotes);
+                        result.userCommentUpvotes.splice(userIndexToRemove, 1);
                         result.save();
                         commentIndexToRemove = result2.commentUpvotes.indexOf(req.params.id);
                         result2.commentUpvotes.splice(commentIndexToRemove);
@@ -389,8 +390,8 @@ function removeUserCommentDownvote(req,res) {
                 userIdString = userId.toString();
                 Comment.findById(req.body.userDownvotes).then(result2 => {
                     if(result2) {
-                        userIndexToRemove = result.userDownvotes.indexOf(req.body.userDownvotes);
-                        result.userDownvotes.splice(userIndexToRemove, 1);
+                        userIndexToRemove = result.userCommentDownvotes.indexOf(req.body.userDownvotes);
+                        result.userCommentDownvotes.splice(userIndexToRemove, 1);
                         result.save();
                         commentIndexToRemove = result2.commentDownvotes.indexOf(req.params.id);
                         result2.commentDownvotes.splice(commentIndexToRemove);
