@@ -22,6 +22,23 @@ function getSubreddotById(req, res) {
         .catch((err) => res.status(400).json(err));
 }
 
+function getFeaturedSubreddots(req, res) {
+    console.log("test");
+    subreddot.find().sort({subscribers: -1}).limit(10)
+        .then((result) => {
+            if (result) {
+                console.log(result);
+                res.send(result);
+            } else {
+                res.status(404).send('Subreddot not found');
+            }
+        })
+        .catch((err) => {
+            res.status(400).json(err);
+            console.log(err);
+        });
+}
+
 function getSubreddotByName(req, res) {
     subreddot.findOne({name: req.params.name})
         .then((result) => {
@@ -100,4 +117,4 @@ function checkName(req, res) {
         .catch((err) => res.status(400).json(err));
 }
 
-module.exports = { getAllSubreddots, getSubreddotById, getSubreddotByName, postSubreddot, putSubreddot, deleteSubreddot, checkName };
+module.exports = { getAllSubreddots, getSubreddotById, getSubreddotByName, postSubreddot, putSubreddot, deleteSubreddot, checkName, getFeaturedSubreddots };
