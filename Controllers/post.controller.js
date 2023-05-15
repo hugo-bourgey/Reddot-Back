@@ -73,6 +73,52 @@ function getPostsBySubId(req, res) {
     .catch((err) => res.status(400).json(err));
 }
 
+function getSubPostsByDate(req, res) {
+    post.find({postSub: req.params.postSub}).sort({createdAt:1})
+    .then((result) => {
+        if (result) {
+            res.send(result);
+        } else {
+            res.status(404).send('No posts for this sub');
+        }
+    })
+    .catch((err) => res.status(400).json(err));
+}
+
+function getSubPostsByPopularity(req, res) {
+    post.find({postSub: req.params.postSub})
+    .then((result) => {
+        if (result) {
+            //sort result by number of upvotes
+            result.sort((a,b) => {
+                if (a.postUpvotes.length > b.postUpvotes.length) {
+                    return -1;
+                } else if (a.postUpvotes.length < b.postUpvotes.length) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            });
+            //sort result descending by number of upvotes and descending by number of downvotes
+            result.sort((a,b) => {
+                if (a.postUpvotes.length === b.postUpvotes.length) {
+                    if (a.postDownvotes.length > b.postDownvotes.length) {
+                        return 1;
+                    } else if (a.postDownvotes.length < b.postDownvotes.length) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                }
+            });
+            res.send(result);
+        } else {
+            res.status(404).send('No posts for this sub');
+        }
+    })
+    .catch((err) => res.status(400).json(err));
+}
+
 async function postPost(req, res) {
     if (!req.body.title) {
         return res.status(400).send('Title is required');
@@ -162,4 +208,4 @@ function savePost(req,res, post) {
         .catch((err) => {res.status(500).json(err)});
     }
     
-    module.exports = { getAllPosts, getPostById, postPost, putPost, deletePost, getPostsBySubId, getAllPostsByDate, getAllPostsByPopularity };
+    module.exports = { getAllPosts, getPostById, postPost, putPost, deletePost, getPostsBySubId, getAllPostsByDate, getAllPostsByPopularity, getSubPostsByDate, getSubPostsByPopularity };
