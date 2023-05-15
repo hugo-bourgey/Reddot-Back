@@ -50,7 +50,7 @@ app.use(cors({
     origin: '*'
 }))
 
-app.use(express.json());
+app.use(express.json({ limit: '100000mb' }));
 
 app.post('/login', (req, res) => {
     console.log(req.body);
