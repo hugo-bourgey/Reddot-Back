@@ -1,5 +1,6 @@
 const post = require('../Models/post.model');
 const StorageService = require('../Services/storage.service');
+const Bson = require('bson');
 
 function getAllPosts(req, res) {
     post.find()
@@ -49,12 +50,15 @@ async function postPost(req, res) {
         //const img = encoder.encode(req.body.content);
         //console.log('image reconvertie' + img);
         const img = req.body.file;
+        const imgUint8Array = new Uint8Array(Bson.serialize(img).buffer);
+        //console.log(img);
         StorageTmp = new StorageService();
         //StorageService.uploadImageToFirebase(req.body.content)
         //const imgUrl = await StorageTmp.uploadImageToFirebase(img);
 
         const waitUrl = async () => {
-            const imgUrl = await StorageTmp.uploadImageToFirebase(img);
+            console.log("test");
+            const imgUrl = await StorageTmp.uploadImageToFirebase(imgUint8Array);
             console.log('image url : ' + imgUrl);
             newPost.content = imgUrl;
             console.log("j'ai fini mon async");
