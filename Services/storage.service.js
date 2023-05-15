@@ -17,6 +17,7 @@ class StorageService {
   
   // Fonction pour enregistrer l'image dans Firebase Cloud Storage
   async uploadImageToFirebase(imageData) {  
+    console.log("imageData: " + imageData);
     
     const imageId = uuid.v4(); // Génère un identifiant unique pour l'image
     
@@ -33,7 +34,8 @@ class StorageService {
     var imgUrl;
 
     console.log("test1");
-    await storage.uploadBytes(imageRef, imageData)
+    //await storage.uploadBytes(imageRef, imageData)
+    await storage.uploadString(imageRef, imageData, 'base64')
     .then(async (snapshot) => {
       console.log('L\'image a été enregistrée avec succès !');
       await storage.getDownloadURL(imageRef).then(res => {
