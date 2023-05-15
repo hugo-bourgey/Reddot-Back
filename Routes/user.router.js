@@ -9,7 +9,7 @@ userRouter.put('/:id', userController.putUser);
 userRouter.delete('/:id', userController.deleteUser);
 userRouter.put('/subscribe/:id', userController.subscribeToSubreddot);
 userRouter.put('/unsubscribe/:id', userController.unsubscribeToSubreddot);
-userRouter.get('/isSubscribed/:id', userController.isSubscribed);
+userRouter.post('/isSubscribed/:id', userController.isSubscribed);
 userRouter.get('/upvotes/:id', userController.getUserUpvotes);
 userRouter.get('/downvotes/:id', userController.getUserDownvotes);
 userRouter.get('/comments/upvotes/:id', userController.getUserCommentUpvotes);
