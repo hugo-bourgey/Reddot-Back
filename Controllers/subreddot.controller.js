@@ -24,7 +24,7 @@ function getSubreddotById(req, res) {
 
 function getFeaturedSubreddots(req, res) {
     console.log("test");
-    subreddot.find().sort({subscribers: -1}).limit(10)
+    subreddot.find().sort({subscribers: -1}).limit(5)
         .then((result) => {
             if (result) {
                 console.log(result);
