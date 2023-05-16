@@ -11,7 +11,7 @@ function getAllPosts(req, res) {
 }
 
 function getAllPostsByDate(req, res) {
-    post.find().sort({createdAt:1})
+    post.find().sort({createdAt:-1})
     .then((result) => {
         res.send(result);
     })
@@ -74,7 +74,7 @@ function getPostsBySubId(req, res) {
 }
 
 function getSubPostsByDate(req, res) {
-    post.find({postSub: req.params.postSub}).sort({createdAt:1})
+    post.find({postSub: req.params.postSub}).sort({createdAt:-1})
     .then((result) => {
         if (result) {
             res.send(result);
@@ -138,9 +138,9 @@ async function postPost(req, res) {
         console.log(img);
         // const imgUint8Array = new Uint8Array(Bson.serialize(img).buffer);
         //console.log(img);
-
+        
         StorageTmp = new StorageService();
-
+        
         const waitUrl = async () => {
             console.log("test");
             const imgUrl = await StorageTmp.uploadImageToFirebase(img);
@@ -148,31 +148,36 @@ async function postPost(req, res) {
             newPost.content = imgUrl;
             console.log("j'ai fini mon async");
         }
-
+        
         await waitUrl();
-
+        
         console.log("FUCK THE ASYNC WE BALL");
         return savePost(req,res,newPost);
+    } else {
+        newPost.save()
+        .then((result) => {
+            res.send(result);
+        })
     } 
-
-
-        //     StorageTmp.uploadImageToFirebase(img)
-        //     .then((result) => {
-        //         newPost.content = result;
-        //         newPost.save()
-        //         .then((result) => {
-        //             res.send(result);
-        //         })
-        //         .catch((err) => res.status(500).json(err));
-        //     })
-        //     .catch((err) => res.status(500).json(err));
-        // } else {
-        //     newPost.save()
-        //     .then((result) => {
-        //         res.send(result);
-        //     })
-        //     .catch((err) => res.status(500).json(err));
-        // }
+    
+    
+    //     StorageTmp.uploadImageToFirebase(img)
+    //     .then((result) => {
+    //         newPost.content = result;
+    //         newPost.save()
+    //         .then((result) => {
+    //             res.send(result);
+    //         })
+    //         .catch((err) => res.status(500).json(err));
+    //     })
+    //     .catch((err) => res.status(500).json(err));
+    // } else {
+    //     newPost.save()
+    //     .then((result) => {
+    //         res.send(result);
+    //     })
+    //     .catch((err) => res.status(500).json(err));
+    // }
 }
 
 function savePost(req,res, post) {
@@ -182,30 +187,30 @@ function savePost(req,res, post) {
     })
     .catch((err) => res.status(500).json(err));
 }
-    
-    function putPost(req, res) {
-        if (!req.body.title) {
-            return res.status(400).send('Title is required');
-        }
-        post.findOneAndUpdate({ _id: req.params.id }, {
-            title: req.body.title,
-            content: req.body.content,
-            media: req.body.media,
-            postUser: req.body.postUser,
-            postSub: req.body.postSub
-        }).then((result) => {
-            res.send(result);
-        }).catch((err) => {
-            res.status(500).json(err);
-        });
+
+function putPost(req, res) {
+    if (!req.body.title) {
+        return res.status(400).send('Title is required');
     }
-    
-    function deletePost(req, res) {
-        post.findOneAndDelete({ _id: req.params.id })
-        .then((result) => {
-            res.send(result);
-        })
-        .catch((err) => {res.status(500).json(err)});
-    }
-    
-    module.exports = { getAllPosts, getPostById, postPost, putPost, deletePost, getPostsBySubId, getAllPostsByDate, getAllPostsByPopularity, getSubPostsByDate, getSubPostsByPopularity };
+    post.findOneAndUpdate({ _id: req.params.id }, {
+        title: req.body.title,
+        content: req.body.content,
+        media: req.body.media,
+        postUser: req.body.postUser,
+        postSub: req.body.postSub
+    }).then((result) => {
+        res.send(result);
+    }).catch((err) => {
+        res.status(500).json(err);
+    });
+}
+
+function deletePost(req, res) {
+    post.findOneAndDelete({ _id: req.params.id })
+    .then((result) => {
+        res.send(result);
+    })
+    .catch((err) => {res.status(500).json(err)});
+}
+
+module.exports = { getAllPosts, getPostById, postPost, putPost, deletePost, getPostsBySubId, getAllPostsByDate, getAllPostsByPopularity, getSubPostsByDate, getSubPostsByPopularity };
