@@ -16,6 +16,8 @@ function getUserById(req, res) {
   User.findById(req.params.id)
     .then((result) => {
       if (result) {
+          //filter the result to remove the password
+            result.password = undefined;
         res.send(result);
       } else {
         res.status(404).send("User not found");
